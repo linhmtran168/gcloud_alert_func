@@ -33,7 +33,6 @@ type WebhookRequest struct {
 }
 
 func AlertFunc(w http.ResponseWriter, r *http.Request) {
-	var alert StackDriveAlert
 	token := r.URL.Query().Get("auth_token")
 	if token != os.Getenv("AUTH_TOKEN") {
 		log.Printf("Unauthorized Access with Token: %s\n", token)
@@ -41,6 +40,7 @@ func AlertFunc(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var alert StackDriveAlert
 	if err := json.NewDecoder(r.Body).Decode(&alert); err != nil {
 		log.Printf("%+v", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
